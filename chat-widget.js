@@ -93,7 +93,7 @@
     }
 
     try {
-      await loadScript('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/supabase.min.js');
+        await loadScript('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2');
       if (!window.supabase || !window.supabase.createClient) {
         console.warn('⚠️ Supabase library loaded but API not found. Falling back to localStorage.');
         return false;
