@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DigiBot - AI Chat Widget PRO</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="chat-widget.css">
+    <style>
+        :root {
+            --primary: #3b82f6;
+            --primary-dark: #1e3a8a;
+            --secondary: #06b6d4;
+            --accent: #f59e0b;
+            --dark: #0f172a;
+            --light: #f1f5f9;
+        }
+        * { font-family: 'Poppins', sans-serif; }
+        
+        .navbar {
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 15px 0;
+        }
+        .navbar-brand { font-weight: 700; font-size: 24px; color: #fff !important; }
+        .navbar-brand span { color: var(--secondary); }
+        .nav-link { color: rgba(255,255,255,0.8) !important; font-weight: 500; margin: 0 10px; transition: all 0.3s; }
+        .nav-link:hover { color: var(--secondary) !important; }
+        .btn-nav { background: linear-gradient(135deg, var(--primary), var(--secondary)); border: none; padding: 10px 25px; border-radius: 25px; color: #fff; font-weight: 600; }
+        
+        .hero {
+            background: linear-gradient(135deg, var(--dark), var(--primary-dark));
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+            padding-top: 80px;
+        }
+        .hero::before {
+            content: '';
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(6, 182, 212, 0.15), transparent 70%);
+            top: -200px;
+            right: -200px;
+            border-radius: 50%;
+        }
+        .hero-badge {
+            background: rgba(6, 182, 212, 0.15);
+            border: 1px solid rgba(6, 182, 212, 0.3);
+            padding: 8px 20px;
+            border-radius: 25px;
+            font-size: 14px;
+            color: var(--secondary);
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+        .hero h1 { font-size: 48px; font-weight: 800; color: #fff; line-height: 1.2; margin-bottom: 25px; }
+        .hero h1 span { background: linear-gradient(135deg, var(--primary), var(--secondary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .hero p { font-size: 18px; color: rgba(255,255,255,0.7); margin-bottom: 35px; line-height: 1.8; }
+        
+        .btn-primary-custom {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border: none;
+            padding: 15px 35px;
+            border-radius: 30px;
+            font-weight: 600;
+            color: #fff;
+            transition: all 0.3s;
+            box-shadow: 0 10px 30px rgba(59, 130, 246, 0.3);
+        }
+        .btn-primary-custom:hover { transform: translateY(-3px); box-shadow: 0 15px 40px rgba(59, 130, 246, 0.4); color: #fff; }
+        .btn-outline-custom {
+            border: 2px solid rgba(255,255,255,0.3);
+            padding: 13px 35px;
+            border-radius: 30px;
+            font-weight: 600;
+            color: #fff;
+            background: transparent;
+            transition: all 0.3s;
+        }
+        .btn-outline-custom:hover { background: rgba(255,255,255,0.1); border-color: var(--secondary); color: #fff; }
+        
+        
+        .features { padding: 100px 0; background: #fff; }
+        .section-badge { background: rgba(59, 130, 246, 0.1); color: var(--primary); padding: 8px 20px; border-radius: 25px; font-size: 14px; font-weight: 600; display: inline-block; margin-bottom: 15px; }
+        .section-title { font-size: 38px; font-weight: 700; color: var(--dark); margin-bottom: 20px; }
+        .section-subtitle { font-size: 17px; color: #64748b; max-width: 600px; margin: 0 auto 50px; }
+        
+        .feature-card {
+            background: #fff;
+            border: 1px solid #e2e8f0;
+            border-radius: 20px;
+            padding: 30px 25px;
+            text-align: center;
+            transition: all 0.3s;
+            height: 100%;
+        }
+        .feature-card:hover { transform: translateY(-10px); box-shadow: 0 20px 50px rgba(0,0,0,0.1); border-color: transparent; }
+        .feature-icon {
+            width: 65px;
+            height: 65px;
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(6, 182, 212, 0.1));
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 18px;
+            font-size: 26px;
+        }
+        .feature-card h4 { font-size: 18px; font-weight: 600; color: var(--dark); margin-bottom: 10px; }
+        .feature-card p { font-size: 14px; color: #64748b; line-height: 1.7; margin: 0; }
+        
+        .themes { padding: 100px 0; background: linear-gradient(135deg, var(--dark), var(--primary-dark)); }
+        .themes .section-title { color: #fff; }
+        .themes .section-subtitle { color: rgba(255,255,255,0.7); }
+        .theme-card {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 16px;
+            padding: 25px;
+            text-align: center;
+            transition: all 0.3s;
+        }
+        .theme-card:hover { background: rgba(255,255,255,0.1); transform: scale(1.05); }
+        .theme-color { width: 55px; height: 55px; border-radius: 50%; margin: 0 auto 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+        .theme-card h5 { color: #fff; font-size: 15px; font-weight: 600; margin: 0; }
+        
+        .how-it-works { padding: 100px 0; background: var(--light); }
+        .step-card { text-align: center; }
+        .step-number {
+            width: 55px;
+            height: 55px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            font-weight: 700;
+            color: #fff;
+            margin: 0 auto 18px;
+        }
+        .step-card h4 { font-size: 18px; font-weight: 600; color: var(--dark); margin-bottom: 10px; }
+        .step-card p { font-size: 14px; color: #64748b; }
+        
+        .pricing { padding: 100px 0; background: #fff; }
+        .price-card {
+            background: #fff;
+            border: 2px solid #e2e8f0;
+            border-radius: 24px;
+            padding: 35px 30px;
+            text-align: center;
+            transition: all 0.3s;
+            position: relative;
+        }
+        .price-card.featured { border-color: var(--primary); transform: scale(1.05); box-shadow: 0 20px 60px rgba(59, 130, 246, 0.2); }
+        .price-card.featured::before {
+            content: 'POPULAR';
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: #fff;
+            padding: 5px 20px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+        .price-card h4 { font-size: 20px; font-weight: 600; color: var(--dark); margin-bottom: 10px; }
+        .price { font-size: 44px; font-weight: 800; color: var(--primary); margin-bottom: 20px; }
+        .price span { font-size: 15px; font-weight: 400; color: #64748b; }
+        .price-features { list-style: none; padding: 0; margin: 0 0 25px; text-align: left; }
+        .price-features li { padding: 10px 0; border-bottom: 1px solid #f1f5f9; font-size: 14px; color: #64748b; }
+        .price-features li i { color: var(--secondary); margin-right: 10px; }
+        
+        .tech-stack { padding: 80px 0; background: var(--light); }
+        .tech-icon-large {
+            width: 75px;
+            height: 75px;
+            background: #fff;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            transition: all 0.3s;
+        }
+        .tech-icon-large:hover { transform: translateY(-5px); }
+        .tech-icon-large i { font-size: 32px; }
+        .tech-name { font-size: 14px; font-weight: 600; color: var(--dark); }
+        
+        footer { background: var(--dark); padding: 60px 0 30px; }
+        footer p { color: rgba(255,255,255,0.6); font-size: 14px; }
+        .copyright { border-top: 1px solid rgba(255,255,255,0.1); padding-top: 25px; margin-top: 40px; text-align: center; color: rgba(255,255,255,0.5); font-size: 13px; }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="#">🤖 Digi<span>Bot</span></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mx-auto">
+                    <li class="nav-item"><a class="nav-link" href="#features">Features</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#themes">Themes</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#how-it-works">How It Works</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#pricing">Pricing</a></li>
+                </ul>
+                <a href="#" class="btn btn-nav" onclick="ChatWidget.open()">Get Started</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="hero">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <span class="hero-badge">🚀 AI-Powered Chat Widget</span>
+                    <h1>Engage Visitors with <span>DigiBot</span></h1>
+                    <p>Transform your website with a modern, feature-rich AI chatbot. Boost engagement, provide instant support, and capture leads 24/7.</p>
+                    <div class="d-flex gap-3 flex-wrap">
+                        <a href="#pricing" class="btn btn-primary-custom"><i class="fas fa-shopping-cart me-2"></i>Purchase Now</a>
+                        <a href="#" class="btn btn-outline-custom" onclick="ChatWidget.open()"><i class="fas fa-play me-2"></i>Live Demo</a>
+                    </div>
+                </div>
+                <div class="col-lg-6 mt-5 mt-lg-0">
+                    <div class="chat">
+                        <img src="chat-widget-pro.png" alt="Chat Interface" class="img-fluid rounded shadow">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features -->
+    <section class="features" id="features">
+        <div class="container">
+            <div class="text-center">
+                <span class="section-badge">Features</span>
+                <h2 class="section-title">Powerful Features</h2>
+                <p class="section-subtitle">Everything you need for an engaging chat experience.</p>
+            </div>
+            <div class="row g-4">
+                <div class="col-lg-4 col-md-6">
+                    <div class="feature-card">
+                        <div class="feature-icon">🤖</div>
+                        <h4>AI-Powered Responses</h4>
+                        <p>Integrate with Gemini AI for intelligent, context-aware conversations.</p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="feature-card">
+                        <div class="feature-icon">🎨</div>
+                        <h4>5 Beautiful Themes</h4>
+                        <p>Choose from 5 stunning color themes to match your brand.</p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="feature-card">
+                        <div class="feature-icon">🌙</div>
+                        <h4>Dark Mode</h4>
+                        <p>Beautiful dark theme that's easy on the eyes.</p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="feature-card">
+                        <div class="feature-icon">📁</div>
+                        <h4>File Upload</h4>
+                        <p>Support for images, PDFs, and documents with preview.</p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="feature-card">
+                        <div class="feature-icon">💾</div>
+                        <h4>Export Chat</h4>
+                        <p>Download conversations as TXT or JSON format.</p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="feature-card">
+                        <div class="feature-icon">😊</div>
+                        <h4>Emoji Picker</h4>
+                        <p>Built-in emoji picker for expressive conversations.</p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="feature-card">
+                        <div class="feature-icon">🔔</div>
+                        <h4>Sound Notifications</h4>
+                        <p>Audio alerts for new messages to keep users engaged.</p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="feature-card">
+                        <div class="feature-icon">📱</div>
+                        <h4>Fully Responsive</h4>
+                        <p>Perfect experience on all devices and screen sizes.</p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="feature-card">
+                        <div class="feature-icon">⚡</div>
+                        <h4>Easy Integration</h4>
+                        <p>Simple setup with just a few lines of code.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Themes -->
+    <section class="themes" id="themes">
+        <div class="container">
+            <div class="text-center">
+                <span class="section-badge" style="background: rgba(255,255,255,0.1); color: #fff;">Themes</span>
+                <h2 class="section-title">5 Color Themes</h2>
+                <p class="section-subtitle">Match your brand with stunning pre-built themes.</p>
+            </div>
+            <div class="row g-4 justify-content-center">
+                <div class="col-lg-2 col-md-4 col-6">
+                    <div class="theme-card" onclick="ChatWidget.openSettings()">
+                        <div class="theme-color" style="background: linear-gradient(135deg, #3b82f6, #1e3a8a);"></div>
+                        <h5>Blue</h5>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-4 col-6">
+                    <div class="theme-card" onclick="ChatWidget.openSettings()">
+                        <div class="theme-color" style="background: linear-gradient(135deg, #06b6d4, #0891b2);"></div>
+                        <h5>Cyan</h5>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-4 col-6">
+                    <div class="theme-card" onclick="ChatWidget.openSettings()">
+                        <div class="theme-color" style="background: linear-gradient(135deg, #10b981, #059669);"></div>
+                        <h5>Green</h5>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-4 col-6">
+                    <div class="theme-card" onclick="ChatWidget.openSettings()">
+                        <div class="theme-color" style="background: linear-gradient(135deg, #f59e0b, #d97706);"></div>
+                        <h5>Orange</h5>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-4 col-6">
+                    <div class="theme-card" onclick="ChatWidget.openSettings()">
+                        <div class="theme-color" style="background: linear-gradient(135deg, #ec4899, #db2777);"></div>
+                        <h5>Pink</h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works -->
+    <section class="how-it-works" id="how-it-works">
+        <div class="container">
+            <div class="text-center">
+                <span class="section-badge">How It Works</span>
+                <h2 class="section-title">Get Started in 3 Steps</h2>
+                <p class="section-subtitle">Simple setup to get DigiBot running on your website.</p>
+            </div>
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="step-card">
+                        <div class="step-number">1</div>
+                        <h4>Download & Extract</h4>
+                        <p>Purchase and download the package. Extract files to your project.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="step-card">
+                        <div class="step-number">2</div>
+                        <h4>Configure Settings</h4>
+                        <p>Add your AI API key and customize themes and behavior.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="step-card">
+                        <div class="step-number">3</div>
+                        <h4>Launch & Engage</h4>
+                        <p>Add one script tag and start engaging your visitors!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing -->
+    <section class="pricing" id="pricing">
+        <div class="container">
+            <div class="text-center">
+                <span class="section-badge">Pricing</span>
+                <h2 class="section-title">Simple Pricing</h2>
+                <p class="section-subtitle">One-time purchase. Lifetime updates. No subscriptions.</p>
+            </div>
+            <div class="row g-4 justify-content-center">
+                <div class="col-lg-4 col-md-6">
+                    <div class="price-card">
+                        <h4>Regular License</h4>
+                        <div class="price">$29<span>/one-time</span></div>
+                        <ul class="price-features">
+                            <li><i class="fas fa-check"></i> All Features Included</li>
+                            <li><i class="fas fa-check"></i> 5 Color Themes</li>
+                            <li><i class="fas fa-check"></i> AI Integration Ready</li>
+                            <li><i class="fas fa-check"></i> 6 Months Support</li>
+                            <li><i class="fas fa-check"></i> Lifetime Updates</li>
+                            <li><i class="fas fa-check"></i> Use on 1 Project</li>
+                        </ul>
+                        <a href="#" class="btn btn-primary-custom w-100">Purchase Now</a>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="price-card featured">
+                        <h4>Extended License</h4>
+                        <div class="price">$129<span>/one-time</span></div>
+                        <ul class="price-features">
+                            <li><i class="fas fa-check"></i> All Features Included</li>
+                            <li><i class="fas fa-check"></i> 5 Color Themes</li>
+                            <li><i class="fas fa-check"></i> AI Integration Ready</li>
+                            <li><i class="fas fa-check"></i> 12 Months Support</li>
+                            <li><i class="fas fa-check"></i> Lifetime Updates</li>
+                            <li><i class="fas fa-check"></i> Use in SaaS Products</li>
+                        </ul>
+                        <a href="#" class="btn btn-primary-custom w-100">Purchase Now</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tech Stack -->
+    <section class="tech-stack">
+        <div class="container">
+            <div class="text-center mb-5">
+                <span class="section-badge">Tech Stack</span>
+                <h2 class="section-title">Built With Modern Technologies</h2>
+            </div>
+            <div class="row g-4 justify-content-center">
+                <div class="col-lg-2 col-md-3 col-4 text-center">
+                    <div class="tech-icon-large"><i class="fab fa-html5" style="color: #e34f26;"></i></div>
+                    <div class="tech-name">HTML5</div>
+                </div>
+                <div class="col-lg-2 col-md-3 col-4 text-center">
+                    <div class="tech-icon-large"><i class="fab fa-css3-alt" style="color: #1572b6;"></i></div>
+                    <div class="tech-name">CSS3</div>
+                </div>
+                <div class="col-lg-2 col-md-3 col-4 text-center">
+                    <div class="tech-icon-large"><i class="fab fa-js" style="color: #f7df1e;"></i></div>
+                    <div class="tech-name">JavaScript</div>
+                </div>
+                <div class="col-lg-2 col-md-3 col-4 text-center">
+                    <div class="tech-icon-large"><i class="fas fa-database" style="color: #7952b3;"></i></div>
+                    <div class="tech-name">SupaBase</div>
+                </div>
+                <div class="col-lg-2 col-md-3 col-4 text-center">
+                    <div class="tech-icon-large"><i class="fas fa-robot" style="color: #4285f4;"></i></div>
+                    <div class="tech-name">Openai API</div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Start chat widget -->
+    <!-- Chat Settings Panel -->
+    <div id="chat-settings" class="chat-settings" data-theme="purple">
+        <div class="settings-header">
+            <h3>⚙️ Chat Settings</h3>
+            <button class="settings-close-btn" onclick="ChatWidget.closeSettings()">×</button>
+        </div>
+        <div class="settings-content">
+            <div class="settings-group">
+                <label>Color Theme</label>
+                <div class="theme-selector">
+                    <button class="theme-btn active" data-theme="purple" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%)"></button>
+                    <button class="theme-btn" data-theme="blue" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)"></button>
+                    <button class="theme-btn" data-theme="green" style="background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%)"></button>
+                    <button class="theme-btn" data-theme="orange" style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%)"></button>
+                    <button class="theme-btn" data-theme="pink" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%)"></button>
+                </div>
+            </div>
+            <div class="settings-group">
+                <label class="checkbox-label">
+                    <input type="checkbox" id="dark-mode-toggle"> 
+                    <span>Dark Mode</span>
+                </label>
+            </div>
+            <div class="settings-group">
+                <label class="checkbox-label">
+                    <input type="checkbox" id="sound-toggle" checked> 
+                    <span>Sound Notifications</span>
+                </label>
+            </div>
+            <div class="settings-group">
+                <label>Widget Position</label>
+                <select id="position-select">
+                    <option value="bottom-right">Bottom Right</option>
+                    <option value="bottom-left">Bottom Left</option>
+                </select>
+            </div>
+            <div class="settings-group settings-buttons">
+                <button class="settings-btn export-btn" onclick="ChatWidget.exportChat()">
+                    📥 Export Chat
+                </button>
+                <button class="settings-btn danger-btn" onclick="ChatWidget.clearHistory()">
+                    🗑️ Clear History
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Chat Bubble Button -->
+    <button id="chat-bubble-btn" class="chat-bubble-btn bottom-right" data-theme="purple">
+        <span class="chat-bubble-icon"><i class="fas fa-comment-dots"></i></span>
+        <span class="chat-close-icon"><i class="fas fa-xmark"></i></i></span>
+        <span class="unread-badge" id="unread-badge">0</span>
+    </button>
+
+    <!-- Main Chat Widget -->
+    <div id="chat-widget" class="chat-widget bottom-right" data-theme="purple">
+        <!-- Header -->
+        <div class="chat-header">
+            <div class="chat-header-content">
+                <div class="bot-avatar"><i class="fas fa-robot"></i></div>
+                <div class="chat-header-text">
+                    <h3>DigiBot</h3>
+                    <span class="status-indicator">Online</span>
+                </div>
+            </div>
+            <div class="chat-header-actions">
+                <button class="header-action-btn" onclick="ChatWidget.openSettings()" title="Settings">⚙️</button>
+                <button class="chat-close-btn" title="Close"><i class="fas fa-xmark"></i></i></button>
+            </div>
+        </div>
+
+        <!-- Messages Container -->
+        <div class="chat-messages" id="chat-messages">
+            <div class="message bot-message">
+                <div class="message-avatar"><i class="fas fa-robot"></i></i></div>
+                <div class="message-content">
+                    <div class="message-bubble">
+                        Hello! 👋 I'm your AI assistant. How can I help you today?
+                        <div class="quick-actions">
+                            <button class="quick-action-btn" onclick="ChatWidget.sendMessage('Tell me about your features')"> Features</button>
+                            <button class="quick-action-btn" onclick="ChatWidget.sendMessage('Show me pricing')">Pricing</button>
+                        </div>
+                    </div>
+                    <div class="message-time">Just now</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Input Container -->
+        <div class="chat-input-container">
+            <form id="chat-form" class="chat-form">
+                <input type="text" id="chat-input" class="chat-input" placeholder="Type your message..." autocomplete="off" required>
+                <button type="submit" class="chat-send-btn" title="Send">➤</button>
+            </form>
+        </div>
+    </div>
+    <!-- End chat widget -->
+
+
+    <!-- Footer -->
+    <footer>
+        <div class="copyright">
+            <p>© 2025 DigiBot. All rights reserved</p>
+        </div>
+    </footer>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+    <script src="chat-widget.js"></script>
+</body>
+</html>
