@@ -418,7 +418,8 @@
 
 .chat-form {
     display: flex;
-    gap: 6px;
+    width: 95%;
+    gap: 1px;
     align-items: center;
 }
 
@@ -609,14 +610,4 @@
     .demo-header { padding: 20px; }
     .demo-header h1 { font-size: 1.5em; }
     .chat-widget { width: calc(100vw - 32px); height: calc(100vh - 100px); }
-    .chat-send-btn {
-        width: 1.5rem;
-        height: 1.5rem;
-    }
-    .chat-input-container {
-        padding: 8px;
-    }
-    .chat-input {
-        font-size: 13px;
-    }
-}   
+    }   
