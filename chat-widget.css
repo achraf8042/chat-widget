@@ -611,6 +611,6 @@
     .demo-header h1 { font-size: 1.5em; }
     .chat-widget { width: calc(100vw - 32px); height: calc(100vh - 100px); }
     .chat-form {
-        width: 85%;
+        width: 60%;
     }
 }   
