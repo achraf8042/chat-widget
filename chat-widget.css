@@ -144,7 +144,11 @@
     max-height: calc(100vh - 140px);
     background: var(--chat-bg);
     border-radius: 16px;
-    box-shadow: 0 10px 40px var(--chat-shadow);
+    /* Premium layered shadow */
+    box-shadow: 
+        0 4px 6px -1px rgba(0, 0, 0, 0.1),
+        0 2px 4px -1px rgba(0, 0, 0, 0.06),
+        0 20px 25px -5px rgba(0, 0, 0, 0.1);
     display: flex;
     flex-direction: column;
     overflow: hidden;
@@ -154,7 +158,8 @@
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     z-index: 999998;
     padding-bottom: env(safe-area-inset-bottom);
-
+    /* Ensure consistent, clean font rendering */
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
 
 .chat-widget.active {
@@ -177,6 +182,9 @@
     align-items: center;
     justify-content: space-between;
     flex-shrink: 0;
+    /* Glassmorphism effect (subtle) */
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
 }
 
 .chat-header-content {
@@ -418,8 +426,7 @@
 
 .chat-form {
     display: flex;
-    width: 95%;
-    gap: 1px;
+    gap: 6px;
     align-items: center;
 }
 
@@ -609,8 +616,24 @@
     .container { padding: 15px; }
     .demo-header { padding: 20px; }
     .demo-header h1 { font-size: 1.5em; }
-    .chat-widget { width: calc(100vw - 32px); height: calc(100vh - 100px); }
-    .chat-form {
-        width: 60%;
+    .chat-widget { 
+        width: 100%;
+        height: 100%;
+        max-width: 100%;
+        max-height: 100%;
+        bottom: 0;
+        right: 0;
+        border-radius: 0;
     }
-}   
+    .chat-send-btn {
+        width: 2.5rem; /* Restore size so it's clickable */
+        height: 2.5rem;
+    }
+    .chat-input-container {
+        padding: 12px;
+        padding-bottom: max(12px, env(safe-area-inset-bottom)); /* Handle iPhone home bar */
+    }
+    .chat-input {
+        font-size: 16px; /* Prevent zoom on iOS */
+    }
+}
